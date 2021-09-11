@@ -467,7 +467,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goal: {x: 0, y: 0}
-  velocidade: 5
+  velocidadeMaxima: 4
+  maxSteeringForce: 0.3
+  stopVal: 0
 --- !u!50 &1071353461
 Rigidbody2D:
   serializedVersion: 4

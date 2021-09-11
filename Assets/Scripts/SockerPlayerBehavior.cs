@@ -5,7 +5,9 @@ using UnityEngine;
 public class SockerPlayerBehavior : MonoBehaviour
 {
     public Vector2 goal;
-    public float velocidade;
+    public float velocidadeMaxima;
+    public float maxSteeringForce; // Força maxima de navegacao / Quanto maior mais rapido vira para o destino
+    public float stopVal; // Limite de velocidade para considerar como parado
 
     private Rigidbody2D rigidbody;
 
@@ -13,13 +15,7 @@ public class SockerPlayerBehavior : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        GoTowardsGoal();
-    }
-
-    void GoTowardsGoal()
-    {
-        Vector2 direcao = goal - rigidbody.position;
-        rigidbody.velocity = direcao.normalized * velocidade;
+        AjustarRotacao();
     }
 
     void AjustarRotacao()
@@ -30,9 +26,22 @@ public class SockerPlayerBehavior : MonoBehaviour
         else rigidbody.rotation = 360 - angulo;
     }
 
+    Vector2 Seek()
+    {
+        Vector2 v = (goal - rigidbody.position).normalized * velocidadeMaxima;
+        Vector2 steering = v - rigidbody.velocity;
+
+        // Limita o valor máximo da força do steering
+        return Vector2.ClampMagnitude(steering, maxSteeringForce);
+    }
+
     private void FixedUpdate()
     {
-        GoTowardsGoal();
+        Vector2 steering = Seek();
+        Vector2 v = rigidbody.velocity + steering;
+        rigidbody.velocity = Vector2.ClampMagnitude(v, velocidadeMaxima);
+
+        if (rigidbody.velocity.magnitude > stopVal) AjustarRotacao();
     }
 
     // Update is called once per frame
@@ -40,9 +49,7 @@ public class SockerPlayerBehavior : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            goal = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            GoTowardsGoal();
-            AjustarRotacao();
+            goal = (Vector2) Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 }
