@@ -10,6 +10,8 @@ public class SockerPlayerBehavior : MonoBehaviour
     public float stopVal; // Limite de velocidade para considerar como parado
     public float distChegada;
 
+    public Rigidbody2D bola;
+
     private Rigidbody2D rigidbody;
 
     // Start is called before the first frame update
@@ -27,18 +29,19 @@ public class SockerPlayerBehavior : MonoBehaviour
         else rigidbody.rotation = 360 - angulo;
     }
 
+    // Normaliza a velocidade
     Vector2 SetMagnetude (Vector2 v, float max)
-    {
+    {   // Multiplica com a velocidade maxima
         return v.normalized * max;
     }
 
     // Algoritmo de busca
     Vector2 Seek()
-    {
+    {   // Calcula a velocidade desejada através da subtração dos vetores do destino e da posição da IA
         Vector2 v = SetMagnetude((goal - rigidbody.position), velocidadeMaxima);
-        Vector2 steering = v - rigidbody.velocity;
+        Vector2 steering = v - rigidbody.velocity; // Subtrai a velocidade desejada da atual
 
-        // Limita o valor máximo da força do steering
+        // Limita/Trunca o valor máximo da força do steering
         return Vector2.ClampMagnitude(steering, maxSteeringForce);
     }
 
@@ -74,9 +77,6 @@ public class SockerPlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            goal = (Vector2) Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
+        goal = bola.position;
     }
 }

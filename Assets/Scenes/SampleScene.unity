@@ -755,6 +755,7 @@ MonoBehaviour:
   maxSteeringForce: 0.3
   stopVal: 0
   distChegada: 1
+  bola: {fileID: 1019112789}
 --- !u!50 &1071353461
 Rigidbody2D:
   serializedVersion: 4
