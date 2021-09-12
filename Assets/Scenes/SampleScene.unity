@@ -756,6 +756,7 @@ MonoBehaviour:
   stopVal: 0
   distChegada: 1
   distDesvio: 1
+  distTouch: 0.3
   bola: {fileID: 1019112789}
 --- !u!50 &1071353461
 Rigidbody2D:

@@ -11,15 +11,21 @@ public class SockerPlayerBehavior : MonoBehaviour
     public float stopVal; // Limite de velocidade para considerar como parado
     public float distChegada;
     public float distDesvio; // Distancia para desviar dos obstaculos
+    public float distTouch;
 
     public Rigidbody2D bola;
 
     private Rigidbody2D rigidbody;
+    private Queue<Vector2> path;
+
+    private readonly Vector2 crossX = new Vector2(0, 0.1f);
+    private readonly Vector2 crossY = new Vector2(0.1f, 0);
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        path = new Queue<Vector2>();
         AjustarRotacao();
     }
 
@@ -91,10 +97,33 @@ public class SockerPlayerBehavior : MonoBehaviour
         return steer;
     }
 
+    // Busca por caminho
+    Vector2 PathFollowing()
+    {
+        if (path.Count > 0)
+        {
+            goal = path.Peek();
+
+            if (path.Count > 1)
+            {
+                if (Vector2.Distance(rigidbody.position, path.Peek()) < distTouch)
+                {
+                    path.Dequeue();
+                }
+
+                return Seek();
+            }
+
+            return Arrival();
+        }
+        
+        return Vector2.zero;
+    }
+
     private void FixedUpdate()
     {
         Vector2 steering = ObstacleAvoidance();
-        if (steering == Vector2.zero) steering = Arrival();
+        if (steering == Vector2.zero) steering = PathFollowing();
 
         Vector2 v = rigidbody.velocity + steering;
         rigidbody.velocity = Vector2.ClampMagnitude(v, velocidadeMaxima);
@@ -105,6 +134,18 @@ public class SockerPlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        goal = bola.position;
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Vector2 p = Input.mousePosition;
+            p = (Vector2) Camera.main.ScreenToWorldPoint(p);
+
+            path.Enqueue(p);
+        }
+
+        foreach(Vector2 p in path)
+        {
+            Debug.DrawLine(p - crossX, p + crossX);
+            Debug.DrawLine(p - crossY, p + crossY);
+        }
     }
 }
