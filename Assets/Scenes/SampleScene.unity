@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 1071353460}
   - component: {fileID: 1071353461}
   - component: {fileID: 1071353462}
+  - component: {fileID: 1071353463}
   m_Layer: 0
   m_Name: playerA
   m_TagString: Untagged
@@ -750,14 +751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963bd99a7929d1c47ad0dbfa6ccaaa6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goal: {x: 0, y: 0}
-  velocidadeMaxima: 4
-  maxSteeringForce: 0.3
-  stopVal: 0
-  distChegada: 1
-  distDesvio: 1
-  distTouch: 0.3
-  bola: {fileID: 1019112789}
 --- !u!50 &1071353461
 Rigidbody2D:
   serializedVersion: 4
@@ -795,6 +788,26 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.55
+--- !u!114 &1071353463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071353457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05244cd00bc15194092542f116e4c46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goal: {x: 0, y: 0}
+  velocidadeMaxima: 3
+  maxSteeringForce: 0.3
+  stopVal: 0.2
+  distChegada: 0.1
+  distDesvio: 0.8
+  distTouch: 0.1
+  bola: {fileID: 1019112788}
 --- !u!1 &1533208156
 GameObject:
   m_ObjectHideFlags: 0
